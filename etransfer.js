@@ -14,12 +14,10 @@ input.question("Enter amount, full name and email:\n", (answer) => {
   let amount = parsed[0];
   let name = parsed[1] + " " + parsed[2];
   let email = parsed[3];
+  let passName = parsed[1] + parsed[2];
 
   (async () => {
-    const browser = await puppeteer.launch({
-      headless: false,
-      defaultViewport: null,
-    });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(
       "https://www1.royalbank.com/cgi-bin/rbaccess/rbcgi3m01?F6=1&F7=IB&F21=IB&F22=IB&REQUEST=ClientSignin&LANGUAGE=ENGLISH"
@@ -59,12 +57,29 @@ input.question("Enter amount, full name and email:\n", (answer) => {
     await page.click(
       "#accProductsContainer > div > div.btns-container.clearfix > button.btn.btn-lg.btn-main"
     );
+
+    //conditional logic to handle non auto deposit user
+
+    //non auto deposit
+    // await page.waitForSelector("#EMT_QUESTION_ID");
+    // await page.click("#EMT_QUESTION_ID");
+    // await page.keyboard.type("Your full name no space no caps");
+    // await page.click("#EMT_RESPONSE_ID");
+    // await page.keyboard.type(passName);
+    // await page.click("#EMT_CONFIRM_RESPONSE_ID");
+    // await page.keyboard.type(passName);
+    // await page.click(
+    //   "#accProductsContainer > div > div.btns-container.clearfix > button.btn.btn-lg.btn-main"
+    // );
+
+    //auto deposit
     await page.waitForSelector(
       "#accProductsContainer > div > div.btns-container.clearfix > button.btn.btn-lg.btn-main"
     );
     await page.click(
       "#accProductsContainer > div > div.btns-container.clearfix > button.btn.btn-lg.btn-main"
     );
+
     await browser.close();
   })();
 
