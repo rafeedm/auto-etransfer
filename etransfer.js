@@ -1,14 +1,18 @@
+//using dotenv module
 const dotenv = require("dotenv");
 dotenv.config();
 
+//initiate command line interface
 const readline = require("readline");
 const input = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
+//using puppeteer
 const puppeteer = require("puppeteer");
 
+//parsing input from user to use in code
 input.question("Enter amount, full name and email:\n", (answer) => {
   const parsed = answer.split(" ");
   let amount = parsed[0];
@@ -16,6 +20,7 @@ input.question("Enter amount, full name and email:\n", (answer) => {
   let email = parsed[3];
   let passName = parsed[1] + parsed[2];
 
+  //browser is launched
   (async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -58,7 +63,7 @@ input.question("Enter amount, full name and email:\n", (answer) => {
       "#accProductsContainer > div > div.btns-container.clearfix > button.btn.btn-lg.btn-main"
     );
 
-    //conditional logic to handle non auto deposit user
+    //TODO: conditional logic to handle non auto deposit user
 
     //non auto deposit
     // await page.waitForSelector("#EMT_QUESTION_ID");
@@ -80,8 +85,10 @@ input.question("Enter amount, full name and email:\n", (answer) => {
       "#accProductsContainer > div > div.btns-container.clearfix > button.btn.btn-lg.btn-main"
     );
 
+    //browser is closed
     await browser.close();
   })();
 
+  // command line interface closed
   input.close();
 });
